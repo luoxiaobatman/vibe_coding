@@ -1,0 +1,13 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="AlibabaEnumConstantsMustHaveComment" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AutoCloseableResource" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,com.ctran.ums.acscommon.mapper.performance.statistics.PerformanceStatisticsTemplateMapper,findAllWithPage,com.ctran.ums.acsmanagement.service.performance.statistics.PerformanceStatisticsTemplateServiceImpl,findForPage,com.ctran.ums.acscommon.mapper.device.DeviceMainMapper,findAllDeviceBelongToPerformanceTemplate,com.ctran.ums.acscommon.starter.IWorkbookGenerator,generateWorkbook" />
+    </inspection_tool>
+    <inspection_tool class="JavadocDeclaration" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ADDITIONAL_TAGS" value="date,menu,Description：设备列表管理,创建人,创建时间,描述,menu:,description:,Menu:,Description:" />
+    </inspection_tool>
+    <inspection_tool class="jol" enabled="true" level="WARNING" enabled_by_default="true" />
+  </profile>
+</component>

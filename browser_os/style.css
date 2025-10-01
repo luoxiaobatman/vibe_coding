@@ -1,0 +1,217 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+#desktop {
+    width: 100%;
+    height: 100%;
+    background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+#taskbar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+#start-menu-button {
+    padding: 0 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#start-menu-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#app-icons {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.taskbar-app-icon {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.taskbar-app-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.taskbar-app-icon.active {
+    border-bottom: 2px solid #3498db;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#system-tray {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+#clock {
+    padding: 0 10px;
+}
+
+#start-menu {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 300px;
+    height: 400px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    display: none; /* Hidden by default */
+    z-index: 999;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.window {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 600px;
+    height: 400px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.window-header {
+    height: 30px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    cursor: move;
+    border-bottom: 1px solid #ccc;
+    transition: background-color 0.2s;
+}
+
+.window.active .window-header {
+    background: #e0e0e0;
+}
+
+.window-title {
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.window-controls {
+    display: flex;
+}
+
+.window-control {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    border: 1px solid #ccc;
+    background: #e0e0e0;
+    cursor: pointer;
+    text-align: center;
+    line-height: 20px;
+}
+
+.window-control.minimize {
+    /* content: '-'; */
+}
+
+.window-control.maximize {
+    /* content: '[]'; */
+}
+
+.window-control.close {
+    /* content: 'X'; */
+}
+
+.window-control:hover {
+    background: #d0d0d0;
+}
+
+.window-body {
+    flex-grow: 1;
+    padding: 10px;
+    overflow: auto;
+}
+
+#desktop-icons {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.desktop-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    width: 80px;
+    text-align: center;
+}
+
+.desktop-icon img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 5px;
+}
+
+.desktop-icon span {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+
+.start-menu-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.start-menu-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#context-menu {
+    position: absolute;
+    display: none;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 10px;
+    z-index: 1001;
+    border-radius: 5px;
+}
+
+.context-menu-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.context-menu-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}

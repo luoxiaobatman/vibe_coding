@@ -7,6 +7,45 @@ let food = {};
 let direction = 'right';
 let score = 0;
 let gameOver = false;
+let gameLoop;
+
+const loginContainer = document.getElementById('login-container');
+const gameContainer = document.getElementById('game-container');
+const rankingContainer = document.getElementById('ranking-container');
+const usernameInput = document.getElementById('username');
+const loginBtn = document.getElementById('login-btn');
+const scoreDisplay = document.getElementById('score');
+const rankingList = document.getElementById('ranking-list');
+const playAgainBtn = document.getElementById('play-again-btn');
+
+let user = null;
+
+loginBtn.addEventListener('click', async () => {
+    const username = usernameInput.value;
+    if (username) {
+        try {
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username }),
+            });
+            user = await response.json();
+            loginContainer.style.display = 'none';
+            gameContainer.style.display = 'block';
+            startGame();
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    }
+});
+
+playAgainBtn.addEventListener('click', () => {
+    rankingContainer.style.display = 'none';
+    gameContainer.style.display = 'block';
+    startGame();
+});
 
 function generateFood() {
     food = {
@@ -29,7 +68,7 @@ function draw() {
 
 function update() {
     if (gameOver) {
-        alert(`Game Over! Your score: ${score}`);
+        endGame();
         return;
     }
 
@@ -59,6 +98,7 @@ function update() {
 
     if (head.x === food.x && head.y === food.y) {
         score++;
+        scoreDisplay.textContent = `Score: ${score}`;
         generateFood();
     } else {
         snake.pop();
@@ -93,6 +133,45 @@ document.addEventListener('keydown', e => {
     }
 });
 
-generateFood();
-setInterval(update, 100);
+function startGame() {
+    snake = [{ x: 10, y: 10 }];
+    direction = 'right';
+    score = 0;
+    gameOver = false;
+    scoreDisplay.textContent = `Score: ${score}`;
+    generateFood();
+    gameLoop = setInterval(update, 100);
+}
 
+async function endGame() {
+    clearInterval(gameLoop);
+    try {
+        await fetch('/scores', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: user.id, score }),
+        });
+        showRanking();
+    } catch (error) {
+        console.error('Failed to save score:', error);
+    }
+}
+
+async function showRanking() {
+    try {
+        const response = await fetch('/ranking');
+        const ranking = await response.json();
+        rankingList.innerHTML = '';
+        ranking.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.username}: ${item.score}`;
+            rankingList.appendChild(li);
+        });
+        gameContainer.style.display = 'none';
+        rankingContainer.style.display = 'block';
+    } catch (error) {
+        console.error('Failed to fetch ranking:', error);
+    }
+}

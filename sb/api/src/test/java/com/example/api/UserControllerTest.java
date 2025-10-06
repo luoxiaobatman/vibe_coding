@@ -1,6 +1,7 @@
 package com.example.api;
 
 import com.example.data.User;
+import com.example.email.EmailService;
 import com.example.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private EmailService emailService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -67,12 +71,16 @@ public class UserControllerTest {
         createdUser.setId(1L);
         createdUser.setUsername("John Doe");
 
-        when(userService.registerNewUser(any(User.class))).thenReturn(createdUser);
+        RegistrationRequest registrationRequest = new RegistrationRequest();
+        registrationRequest.setUser(user);
+        registrationRequest.setCaptcha("123456");
+
+        when(userService.registerNewUser(any(User.class), any(String.class))).thenReturn(createdUser);
 
         mockMvc.perform(post("/users/register")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user)))
+                        .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("John Doe"));
     }

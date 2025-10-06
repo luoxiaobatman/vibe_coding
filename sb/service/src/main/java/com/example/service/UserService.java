@@ -2,6 +2,8 @@ package com.example.service;
 
 import com.example.data.User;
 import com.example.data.UserRepository;
+import com.example.email.EmailService;
+import com.example.service.CaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,11 +18,15 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CaptchaService captchaService;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, CaptchaService captchaService, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.captchaService = captchaService;
+        this.emailService = emailService;
     }
 
     public List<User> getUsers() {
@@ -31,9 +37,17 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User registerNewUser(User user) {
+    public User registerNewUser(User user, String captcha) {
+        if (!captchaService.verifyCaptcha(user.getUsername(), captcha)) {
+            throw new RuntimeException("Invalid captcha");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    public void sendRegistrationCaptcha(String email) {
+        String captcha = captchaService.generateCaptcha(email);
+        emailService.sendEmail(email, "Registration Captcha", "Your captcha is: " + captcha);
     }
 
     @Override

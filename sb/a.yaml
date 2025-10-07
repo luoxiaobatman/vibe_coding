@@ -1,0 +1,14 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: mycluster
+servers: 1
+agents: 2
+image: docker.io/rancher/k3s:v1.31.5-k3s1
+ports:
+  - port: 0.0.0.0:80:80 # same as `--port '8080:80@loadbalancer'`
+    nodeFilters:
+      - loadbalancer
+  - port: 0.0.0.0:443:443 # same as `--port '8080:80@loadbalancer'`
+    nodeFilters:
+      - loadbalancer
